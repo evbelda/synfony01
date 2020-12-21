@@ -1,0 +1,57 @@
+﻿<html>
+<head>
+  <title>
+    Hola que
+  </title>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+$(document).ready(function(){
+    $('#getUser').on('click',function(){
+	
+        var user_id = $('#user_id').val();
+	      //alert('Dentro1-'+ user_id+'-');
+        $.ajax({
+    // En data puedes utilizar un objeto JSON, un array o un query string
+            //data: {"id" : user_id},
+            //Cambiar a type: POST si necesario
+            type: "GET",
+            // Formato de datos que se espera en la respuesta
+            dataType: "json",
+            // URL a la que se enviará la solicitud Ajax
+            url: "usuarios/"+user_id,
+        })
+        .done(function( data) {
+                if (data != null)
+                {
+                    $('#Nombre').text(data["nombre"]);
+                    $('#Email').text(data["email"]);
+                    $('#Password').text(data["password"]);
+                    $('.user-content').slideDown();
+                }
+                else{
+                    $('.user-content').slideUp();
+                    alert("User not found...");
+                }
+        })
+        .fail(function( jqXHR, textStatus, errorThrown ) {
+            if ( console && console.log ) {
+                console.log( "La solicitud a fallado: " +  textStatus);
+            }
+        });  
+    });
+});
+</script>
+</head>
+<body>
+
+
+<input type="text" id="user_id" />
+<input type="button" id="getUser" value="Pregunta"/>
+<div class="user-content" style="display: none;">
+    <h4>Detalles de usuario</h4>
+    <p>Nombre: <span id="Nombre"></span></p>
+    <p>Email: <span id="Email"></span></p>
+    <p>Password: <span id="Password"></span></p>
+</div>
+</body>
+</html>
